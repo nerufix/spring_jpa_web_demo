@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+  <bean id="201" class="pl.ug.edu.mwitt.jpa.domain.Match">
+    <property name="id" value="201"/>
+    <property name="beginTime" value="2018-09-01 09:00:00"/>
+    <property name="matchType" value="Elimination"/>
+    <property name="winner" ref="1"/>
+    <property name="persons">
+      <set>
+        <ref bean="1"/>
+        <ref bean="2"/>
+      </set>
+    </property>
+  </bean>
+</beans>

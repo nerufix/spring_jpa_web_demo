@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+  <bean id="101" class="pl.ug.edu.mwitt.jpa.domain.Team">
+    <property name="id" value="101"/>
+    <property name="name" value="Poland"/>
+  </bean>
+  <bean id="102" class="pl.ug.edu.mwitt.jpa.domain.Team">
+    <property name="id" value="102"/>
+    <property name="name" value="Germany"/>
+  </bean>
+</beans>

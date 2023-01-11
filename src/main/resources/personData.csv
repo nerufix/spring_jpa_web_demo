@@ -1,0 +1,7 @@
+id;name;password;personType;team
+1;Jan-Krzysztof Duda;duda123;Player;101
+2;Oskar Wieczorek;duda123;Player;101
+3;Vincent Keymer;duda123;Player;102
+4;Daniel Fridman;duda123;Player;102
+5;admin;admin;Admin;null
+6;neru;admin;Guest;null
