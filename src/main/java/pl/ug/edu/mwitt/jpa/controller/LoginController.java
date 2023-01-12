@@ -2,12 +2,12 @@ package pl.ug.edu.mwitt.jpa.controller;
 
 import com.google.common.hash.Hashing;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -56,12 +56,13 @@ public class LoginController {
     }
 
     @GetMapping("/")
-    public String init(@CookieValue(value = "session", defaultValue = "-1") Long session,
+    public String init(HttpServletRequest request,
+                       @CookieValue(value = "session", defaultValue = "-1") Long session,
                        Model model){
         Optional<Person> query = persons.getRepo().findById(session);
         if (query.isPresent()) {
-            model.addAttribute("user", query.get());
-            return "dashboard";
+            //request.setAttribute("user", query.get());
+            return "redirect:/dashboard";
         }
         return "welcome";
     }
