@@ -1,13 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
   <bean id="201" class="pl.ug.edu.mwitt.jpa.domain.Match">
     <property name="id" value="201"/>
-    <property name="beginTime" value="2018-09-01 09:00:00"/>
+    <property name="beginTime" value="2022-09-01 09:00:00"/>
     <property name="matchType" value="Elimination"/>
     <property name="winner" ref="1"/>
     <property name="persons">
       <set>
         <ref bean="1"/>
+        <ref bean="3"/>
+      </set>
+    </property>
+  </bean>
+  <bean id="202" class="pl.ug.edu.mwitt.jpa.domain.Match">
+    <property name="id" value="202"/>
+    <property name="beginTime" value="2022-01-05 15:00:00"/>
+    <property name="matchType" value="Elimination"/>
+    <property name="winner" ref="3"/>
+    <property name="persons">
+      <set>
         <ref bean="2"/>
+        <ref bean="3"/>
+      </set>
+    </property>
+  </bean>
+  <bean id="203" class="pl.ug.edu.mwitt.jpa.domain.Match">
+    <property name="id" value="203"/>
+    <property name="beginTime" value="2023-02-01 09:00:00"/>
+    <property name="matchType" value="Elimination"/>
+    <property name="winner">
+      <null/>
+    </property>
+    <property name="persons">
+      <set>
+        <ref bean="1"/>
+        <ref bean="5"/>
+      </set>
+    </property>
+  </bean>
+  <bean id="204" class="pl.ug.edu.mwitt.jpa.domain.Match">
+    <property name="id" value="204"/>
+    <property name="beginTime" value="2023-02-04 12:00:00"/>
+    <property name="matchType" value="Semifinal"/>
+    <property name="winner">
+      <null/>
+    </property>
+    <property name="persons">
+      <set>
+        <ref bean="2"/>
+        <ref bean="4"/>
+      </set>
+    </property>
+  </bean>
+  <bean id="205" class="pl.ug.edu.mwitt.jpa.domain.Match">
+    <property name="id" value="205"/>
+    <property name="beginTime" value="2023-02-05 13:00:00"/>
+    <property name="matchType" value="Final"/>
+    <property name="winner">
+      <null/>
+    </property>
+    <property name="persons">
+      <set>
+        <ref bean="2"/>
+        <ref bean="5"/>
+      </set>
+    </property>
+  </bean>
+  <bean id="206" class="pl.ug.edu.mwitt.jpa.domain.Match">
+    <property name="id" value="206"/>
+    <property name="beginTime" value="2023-03-07 12:00:00"/>
+    <property name="matchType" value="Elimination"/>
+    <property name="winner">
+      <null/>
+    </property>
+    <property name="persons">
+      <set>
+        <ref bean="4"/>
+        <ref bean="6"/>
       </set>
     </property>
   </bean>

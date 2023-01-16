@@ -1,0 +1,20 @@
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 10px;
+}
+
+body {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  font-family: "sans-serif";
+  align-items: center;
+  -webkit-align-items: center;
+}
+
+body > * {
+    padding: 5px;
+    margin: 5px;
+}

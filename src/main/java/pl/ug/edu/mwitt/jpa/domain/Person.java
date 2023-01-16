@@ -37,8 +37,7 @@ public class Person {
                 .toString();
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name="person_match")
+    @ManyToMany(mappedBy="persons", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     public Set<Match> getMatches() {
         return matches;
     }

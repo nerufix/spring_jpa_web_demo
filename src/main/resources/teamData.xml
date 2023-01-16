@@ -7,4 +7,8 @@
     <property name="id" value="102"/>
     <property name="name" value="Germany"/>
   </bean>
+  <bean id="103" class="pl.ug.edu.mwitt.jpa.domain.Team">
+    <property name="id" value="103"/>
+    <property name="name" value="France"/>
+  </bean>
 </beans>

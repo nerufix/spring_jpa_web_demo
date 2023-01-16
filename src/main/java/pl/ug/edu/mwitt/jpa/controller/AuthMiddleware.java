@@ -21,7 +21,7 @@ public class AuthMiddleware extends OncePerRequestFilter {
     @Autowired
     PersonService persons;
 
-    List<String> passURIs = List.of("", "/", "/login", "/register");
+    List<String> passURIs = List.of("", "/", "/login", "/register", "/css/style.css");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

@@ -9,7 +9,6 @@ import static jakarta.persistence.CascadeType.PERSIST;
 @Entity
 public class Team {
 
-    //@Column(name="address_id")
     private Long id;
     private String name;
     private Set<Person> people;

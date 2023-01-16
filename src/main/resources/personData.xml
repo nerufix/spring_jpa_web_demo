@@ -16,19 +16,33 @@
   <bean id="3" class="pl.ug.edu.mwitt.jpa.domain.Person">
     <property name="id" value="3"/>
     <property name="name" value="Vincent Keymer"/>
-    <property name="password" value="duda123"/>
+    <property name="password" value="volkswagenb5"/>
     <property name="personType" value="Player"/>
     <property name="team" ref="102"/>
   </bean>
   <bean id="4" class="pl.ug.edu.mwitt.jpa.domain.Person">
     <property name="id" value="4"/>
     <property name="name" value="Daniel Fridman"/>
-    <property name="password" value="duda123"/>
+    <property name="password" value="bmwm3besteautomobile"/>
     <property name="personType" value="Player"/>
     <property name="team" ref="102"/>
   </bean>
   <bean id="5" class="pl.ug.edu.mwitt.jpa.domain.Person">
     <property name="id" value="5"/>
+    <property name="name" value="Étienne Bacrot"/>
+    <property name="password" value="baguette1"/>
+    <property name="personType" value="Player"/>
+    <property name="team" ref="103"/>
+  </bean>
+  <bean id="6" class="pl.ug.edu.mwitt.jpa.domain.Person">
+    <property name="id" value="6"/>
+    <property name="name" value="Robert Crépeaux"/>
+    <property name="password" value="sivouple123"/>
+    <property name="personType" value="Player"/>
+    <property name="team" ref="103"/>
+  </bean>
+  <bean id="7" class="pl.ug.edu.mwitt.jpa.domain.Person">
+    <property name="id" value="7"/>
     <property name="name" value="admin"/>
     <property name="password" value="admin"/>
     <property name="personType" value="Admin"/>
@@ -36,8 +50,8 @@
       <null/>
     </property>
   </bean>
-  <bean id="6" class="pl.ug.edu.mwitt.jpa.domain.Person">
-    <property name="id" value="6"/>
+  <bean id="8" class="pl.ug.edu.mwitt.jpa.domain.Person">
+    <property name="id" value="8"/>
     <property name="name" value="neru"/>
     <property name="password" value="admin"/>
     <property name="personType" value="Guest"/>

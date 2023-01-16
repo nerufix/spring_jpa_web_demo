@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <title>Title</title>
+</head>
+<body>
+  <form method="GET" action="/">
+    <input type="submit" value="Back to dashboard" />
+  </form>
+  <h5>Find matches</h5>
+  <form method="POST" th:action="@{/searchMatch}" >
+    <label>Contestant</label>
+    <input type="text" th:value="${contestant}" name="contestant"/>
+    <br>
+    <label>From date</label>
+    <input type="date" th:value="${beginDate}" name="beginDate"/>
+    <br>
+    <label>To date</label>
+    <input type="date" th:value="${endDate}" name="endDate"/>
+    <br>
+    <label>Type</label>
+    <select name="matchType">
+      <option disabled selected value>Select type...</option>
+      <option th:each="state : ${T(pl.ug.edu.mwitt.jpa.domain.MatchType).values()}"
+              th:value="${state}"
+              th:text="${state}"
+              name="${state}">
+      </option>
+    </select>
+    <br>
+    <input type="submit" value="Submit"/>
+  </form>
+  <br>
+  <h5>Find people</h5>
+  <form method="POST" th:action="@{/searchPerson}" >
+    <label>Name</label>
+    <input type="text" th:value="${name}" name="name"/>
+    <br>
+    <label>Team</label>
+    <input type="text" th:value="${team}" name="team"/>
+    <br>
+    <input type="submit" value="Submit"/>
+  </form>
+
+  <table th:if="${foundMatches}">
+    <tr>
+      <td>Type</td>
+      <td>Begin time</td>
+      <td>Contestants</td>
+    </tr>
+    <tr th:each="match : ${foundMatches}">
+      <td th:text="${match.matchType}"/>
+      <td th:text="${match.beginTime}"/>
+      <td>
+        <span th:each="person, iterStat : ${match.persons}"
+              th:text="!${iterStat.last} ? ${person.getName()} + ', ': ${person.getName()}">
+        </span>
+      </td>
+    </tr>
+  </table>
+
+  <table th:if="${foundPeople}">
+    <tr>
+      <td>Name</td>
+      <td>Team</td>
+      <td>Type</td>
+    </tr>
+    <tr th:each="person : ${foundPeople}">
+      <td th:text="${person.name}"/>
+      <td th:if="${person.team!=null}" th:text="${person.team.name}"/>
+      <td th:unless="${person.team!=null}">No team</td>
+      <td th:text="${person.personType}"/>
+    </tr>
+  </table>
+</body>
+</html>

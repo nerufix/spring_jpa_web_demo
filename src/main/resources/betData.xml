@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+  <bean id="401" class="pl.ug.edu.mwitt.jpa.domain.Bet">
+    <property name="id" value="401"/>
+    <property name="amount" value="100"/>
+    <property name="match" ref="201"/>
+    <property name="person" ref="1"/>
+  </bean>
+  <bean id="402" class="pl.ug.edu.mwitt.jpa.domain.Bet">
+    <property name="id" value="402"/>
+    <property name="amount" value="55"/>
+    <property name="match" ref="202"/>
+    <property name="person" ref="2"/>
+  </bean>
+  <bean id="403" class="pl.ug.edu.mwitt.jpa.domain.Bet">
+    <property name="id" value="403"/>
+    <property name="amount" value="22"/>
+    <property name="match" ref="201"/>
+    <property name="person" ref="3"/>
+  </bean>
+</beans>

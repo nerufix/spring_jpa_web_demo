@@ -14,7 +14,8 @@ public class Match {
     private Person winner;
     private Timestamp beginTime;
 
-    @ManyToMany(mappedBy="matches", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name="person_match")
     public Set<Person> getPersons() {
         return persons;
     }
@@ -27,7 +28,7 @@ public class Match {
     public Match() {
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "winner")
     public Person getWinner() { return winner; }
 

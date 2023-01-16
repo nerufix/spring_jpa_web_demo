@@ -8,17 +8,17 @@ public class Bet {
 
     private Long id;
     @Min(0)
-    private float amount;
+    private Double amount;
     private Person person;
     private Match match;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "person")
     public Person getPerson() {
         return person;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "match")
     public Match getMatch() {
         return match;
@@ -37,11 +37,11 @@ public class Bet {
         this.id = id;
     }
 
-    public float getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

@@ -2,11 +2,53 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Title</title>
 </head>
 <body>
   <h1>Dashboard</h1>
-  <div>Hello, <span th:text="${user.name}" /></div>
+  <h2>Hello, <span th:text="${user.name}" /></h2>
+  <form method="GET" action="/search">
+      <input type="submit" value="Search" />
+  </form>
+  <h3>Upcoming matches: </h3>
+  <table>
+      <tr>
+          <td>Type</td>
+          <td>Begin time</td>
+          <td>Contestants</td>
+      </tr>
+      <tr th:each="match : ${upcomingMatches}">
+          <td th:text="${match.matchType}"/>
+          <td th:text="${match.beginTime}"/>
+          <td>
+              <span th:each="person, iterStat : ${match.persons}"
+                    th:text="!${iterStat.last} ? ${person.getName()} + ', ': ${person.getName()}">
+              </span>
+          </td>
+      </tr>
+  </table>
+
+  <h3>Most betted matches: </h3>
+  <table>
+      <tr>
+          <td>Type</td>
+          <td>Begin time</td>
+          <td>Contestants</td>
+          <td>Amount</td>
+      </tr>
+      <tr th:each="dto : ${mostBettedMatches}">
+          <td th:text="${dto.getMatch().matchType}"/>
+          <td th:text="${dto.getMatch().beginTime}"/>
+          <td>
+              <span th:each="person, iterStat : ${dto.getMatch().persons}"
+                    th:text="!${iterStat.last} ? ${person.getName()} + ', ': ${person.getName()}">
+              </span>
+          </td>
+          <td th:text="${dto.getAmount()}" />
+      </tr>
+  </table>
+
   <form method="POST" action="/logout">
       <input type="submit" value="Log out" />
   </form>
