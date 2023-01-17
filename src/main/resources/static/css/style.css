@@ -18,3 +18,8 @@ body > * {
     padding: 5px;
     margin: 5px;
 }
+
+.red {
+    background-color: #f44336;
+    color: white;
+}

@@ -30,10 +30,21 @@ public class PersonService {
     }
 
     @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
-    public Person findByIdTransactional(String id) {
-        Person person = personRepo.findById(Long.parseLong(id)).get();
-        Hibernate.initialize(person.getMatches());
+    public Optional<Person> findByIdTransactional(String id) {
+        Optional<Person> person = personRepo.findById(Long.parseLong(id));
+        if (person.isPresent()) {
+            Hibernate.initialize(person.get().getMatches());
+            Hibernate.initialize(person.get().getBets());
+        }
         return person;
+    }
+
+    public Long isMatchInPersonBets(Match match, Person person) {
+        List<Long> query =  personRepo.findBets_IdByIdAndBets_Match_Id(person.getId(), match.getId());
+        if (query.size()>0) {
+            return query.get(0);
+        }
+        return 0L;
     }
 
     @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)

@@ -86,6 +86,7 @@ public class MatchService {
 
         for (Match match : query) {
             Hibernate.initialize(match.getPersons());
+            Hibernate.initialize(match.getWinner());
         }
 
         return query;

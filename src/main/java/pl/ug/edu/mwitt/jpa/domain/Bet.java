@@ -2,23 +2,28 @@ package pl.ug.edu.mwitt.jpa.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Bet {
 
     private Long id;
+
+    @NotNull
     @Min(0)
     private Double amount;
+    @NotNull
     private Person person;
+    @NotNull
     private Match match;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "person")
     public Person getPerson() {
         return person;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "match")
     public Match getMatch() {
         return match;

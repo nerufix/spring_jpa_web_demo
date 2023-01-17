@@ -31,7 +31,7 @@ public class AuthMiddleware extends OncePerRequestFilter {
                 String name = cookie.getName();
                 String value = cookie.getValue();
                 if (name.equals("session") && !value.equals("")) {
-                    Optional<Person> user = persons.getRepo().findById(Long.valueOf(value));
+                    Optional<Person> user = persons.findByIdTransactional(value);
                     user.ifPresent(person -> request.setAttribute("user", person));
                     filterChain.doFilter(request, response);
                     return;

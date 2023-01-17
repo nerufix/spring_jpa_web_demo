@@ -17,8 +17,10 @@
           <td>Type</td>
           <td>Begin time</td>
           <td>Contestants</td>
+          <td>Winner</td>
+          <td>Your bet</td>
       </tr>
-      <tr th:each="match : ${upcomingMatches}">
+      <tr th:each="match, iter : ${upcomingMatches}">
           <td th:text="${match.matchType}"/>
           <td th:text="${match.beginTime}"/>
           <td>
@@ -26,6 +28,37 @@
                     th:text="!${iterStat.last} ? ${person.getName()} + ', ': ${person.getName()}">
               </span>
           </td>
+          <td th:if="${match.winner!=null}" th:text="${match.winner.name}"/>
+          <td th:unless="${match.winner!=null}">N/A</td>
+          <td>
+              <form th:if="${match.winner==null && !upcomingMatchesUserBets.get(iter.index).isPresent()}"
+                    method="POST" th:action="@{/dashboard/bet}" th:object="${bet}">
+                  <label>amount:</label>
+                  <input type="number" min="0.01" step="0.01" th:field="*{amount}">
+                  <input type="hidden" th:value="${match.id}" name="match">
+                  <label>on:</label>
+                  <select name="person">
+                      <option th:each="person : ${match.persons}"
+                              th:value="${person.id}"
+                              th:field="*{person}"
+                              th:text="${person.name}"
+                              name="${person}">
+                      </option>
+                  </select>
+                  <input type="submit" value="Place bet"/>
+                  <span th:text="Error!" th:if="${#fields.hasErrors()}" />
+              </form>
+              <div th:if="${upcomingMatchesUserBets.get(iter.index).isPresent()}">
+                  Betted: <span th:text="${upcomingMatchesUserBets.get(iter.index).get().amount}"/>
+                  on <span th:text="${upcomingMatchesUserBets.get(iter.index).get().person.name}"/>
+                  <br>
+                  <form th:if="${match.winner!=null}" method="POST" action="/dashboard/bet/delete">
+                      <input type="hidden" th:value="${upcomingMatchesUserBets.get(iter.index).get().id}" name="id">
+                      <input class="red" type="submit" value="Remove bet" />
+                  </form>
+              </div>
+          </td>
+
       </tr>
   </table>
 
@@ -35,9 +68,11 @@
           <td>Type</td>
           <td>Begin time</td>
           <td>Contestants</td>
+          <td>Winner</td>
           <td>Amount</td>
+          <td>Your bet</td>
       </tr>
-      <tr th:each="dto : ${mostBettedMatches}">
+      <tr th:each="dto, iter : ${mostBettedMatches}">
           <td th:text="${dto.getMatch().matchType}"/>
           <td th:text="${dto.getMatch().beginTime}"/>
           <td>
@@ -45,7 +80,37 @@
                     th:text="!${iterStat.last} ? ${person.getName()} + ', ': ${person.getName()}">
               </span>
           </td>
+          <td th:if="${dto.getMatch().winner!=null}" th:text="${dto.getMatch().winner.name}"/>
+          <td th:unless="${dto.getMatch().winner!=null}">N/A</td>
           <td th:text="${dto.getAmount()}" />
+          <td>
+              <form th:if="${dto.getMatch().winner==null && !upcomingMatchesUserBets.get(iter.index).isPresent()}"
+                    method="POST" th:action="@{/dashboard/bet}" th:object="${bet}">
+                  <label>amount:</label>
+                  <input type="number" min="0.01" step="0.01" th:field="*{amount}">
+                  <input type="hidden" th:value="${dto.getMatch().id}" name="match">
+                  <label>on:</label>
+                  <select name="person">
+                      <option th:each="person : ${dto.getMatch().persons}"
+                              th:value="${person.id}"
+                              th:field="*{person}"
+                              th:text="${person.name}"
+                              name="${person}">
+                      </option>
+                  </select>
+                  <input type="submit" value="Place bet"/>
+                  <span th:text="Error!" th:if="${#fields.hasErrors()}" />
+              </form>
+              <div th:if="${upcomingMatchesUserBets.get(iter.index).isPresent()}">
+                  Betted: <span th:text="${upcomingMatchesUserBets.get(iter.index).get().amount}"/>
+                  on <span th:text="${upcomingMatchesUserBets.get(iter.index).get().person.name}"/>
+                  <br>
+                  <form th:if="${dto.getMatch().winner!=null}" method="POST" action="/dashboard/bet/delete">
+                      <input type="hidden" th:value="${upcomingMatchesUserBets.get(iter.index).get().id}" name="id">
+                      <input class="red" type="submit" value="Remove bet" />
+                  </form>
+              </div>
+          </td>
       </tr>
   </table>
 
@@ -53,4 +118,8 @@
       <input type="submit" value="Log out" />
   </form>
 </body>
+<script th:if="${xd}">
+    alert("Bet must be a positive integer");
+</script>
+
 </html>

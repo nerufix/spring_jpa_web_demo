@@ -49,14 +49,46 @@
       <td>Type</td>
       <td>Begin time</td>
       <td>Contestants</td>
+      <td>Winner</td>
+      <td>Your bet</td>
     </tr>
-    <tr th:each="match : ${foundMatches}">
+    <tr th:each="match, iter : ${foundMatches}">
       <td th:text="${match.matchType}"/>
       <td th:text="${match.beginTime}"/>
       <td>
         <span th:each="person, iterStat : ${match.persons}"
               th:text="!${iterStat.last} ? ${person.getName()} + ', ': ${person.getName()}">
         </span>
+      </td>
+      <td th:if="${match.winner!=null}" th:text="${match.winner.name}"/>
+      <td th:unless="${match.winner!=null}">N/A</td>
+      <td>
+        <form th:if="${match.winner==null && !foundMatchesUserBets.get(iter.index).isPresent()}"
+              method="POST" th:action="@{/dashboard/bet}" th:object="${bet}">
+          <label>amount:</label>
+          <input type="number" min="0.01" step="0.01" th:field="*{amount}">
+          <input type="hidden" th:value="${match.id}" name="match">
+          <label>on:</label>
+          <select name="person">
+            <option th:each="person : ${match.persons}"
+                    th:value="${person.id}"
+                    th:field="*{person}"
+                    th:text="${person.name}"
+                    name="${person}">
+            </option>
+          </select>
+          <input type="submit" value="Place bet"/>
+          <span th:text="Error!" th:if="${#fields.hasErrors()}" />
+        </form>
+        <div th:if="${foundMatchesUserBets.get(iter.index).isPresent()}">
+          Betted: <span th:text="${foundMatchesUserBets.get(iter.index).get().amount}"/>
+          on <span th:text="${foundMatchesUserBets.get(iter.index).get().person.name}"/>
+          <br>
+          <form th:if="${match.winner!=null}" method="POST" action="/dashboard/bet/delete">
+            <input type="hidden" th:value="${foundMatchesUserBets.get(iter.index).get().id}" name="id">
+            <input class="red" type="submit" value="Remove bet" />
+          </form>
+        </div>
       </td>
     </tr>
   </table>
