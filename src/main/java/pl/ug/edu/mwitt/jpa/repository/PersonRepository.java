@@ -20,7 +20,10 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     List<Person> findByNameContaining(String name);
     List<Person> findByTeam_NameContaining(String team);
 
-    @Query("select b.id from Person p left join Bet b where p.id=?1 and b.match.id=?2")
+    //@Query("select b.id from Bet b where b.better=?1 and b.match=?2")
+    //List<Long> findBets_IdByIdAndBets_Match_Id(Long personId, Long matchId);
+
+    @Query("select b.id from Bet b join Person p where p.id=?1 and b.match.id=?2")
     List<Long> findBets_IdByIdAndBets_Match_Id(Long personId, Long matchId);
 
 
