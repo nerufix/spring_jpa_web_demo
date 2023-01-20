@@ -14,7 +14,10 @@ import pl.ug.edu.mwitt.jpa.service.PersonService;
 import pl.ug.edu.mwitt.jpa.service.TeamService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @ImportResource({
@@ -24,7 +27,7 @@ import java.util.List;
 		"classpath:betData.xml"})
 public class ImportDataApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		ApplicationContext ctx = SpringApplication.run(ImportDataApplication.class, args);
 		List<String> beanNames = List.of(ctx.getBeanDefinitionNames());
 		PersonService ps = ctx.getBean(PersonService.class);
@@ -53,21 +56,30 @@ public class ImportDataApplication {
 			}
 		}
 		for (Person person : persons) {
+			if (person.getBets() == null) {
+				person.setBets(new HashSet<>());
+			}
 			if (person.getTeam()!=null && person.getTeam().getId()>100) {
 				person.getTeam().setId(person.getTeam().getId()-100);
 			}
 
 		}
 		for (Bet bet : bets) {
+//			if (persons.get(0).getBets()==null) {
+//				persons.get(0).setBets(Set.copyOf(bets));
+//			}
 			if (bet.getMatch()!=null && bet.getMatch().getId()>200) {
 				bet.getMatch().setId(bet.getMatch().getId()-200);
 			}
 
 		}
+		persons.forEach(p -> System.out.println(p.getBets()));
 		ts.importMany(teams);
 		ps.importMany(persons);
+
 		ms.importMany(matches);
-		bs.importMany(bets);
+		ps.importBets(ps.findByIdTransactional(Long.toString(persons.get(0).getId())).get(), bets);
+		//bs.importMany(bets);
 
 	}
 }

@@ -5,12 +5,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.checkerframework.common.aliasing.qual.Unique;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
-import static jakarta.persistence.CascadeType.ALL;
-import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.CascadeType.*;
 
 @Entity
 public class Person {
@@ -18,7 +18,6 @@ public class Person {
     @Column(length = 40, unique = true)
     @NotNull(message = "Field cannot be empty.")
     @Size(min = 3, max = 40, message = "Name must contain between 3 and 15 characters.")
-
     private String name;
     @Column(length = 64)
     @NotNull(message = "Field cannot be empty.")
@@ -31,20 +30,21 @@ public class Person {
     private Team team;
 
     @PrePersist
+    @PreUpdate
     public void prePersist() {
-        password = Hashing.sha256()
+        this.password = Hashing.sha256()
                 .hashString(password, StandardCharsets.UTF_8)
                 .toString();
     }
 
-    @ManyToMany(mappedBy="persons", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy="persons", fetch = FetchType.LAZY)
     public Set<Match> getMatches() {
         return matches;
     }
 
 
 
-    @ManyToOne(cascade=PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="team")
     public Team getTeam() {
         return team;
@@ -59,7 +59,8 @@ public class Person {
         return id;
     }
 
-    @OneToMany(cascade=ALL, mappedBy="person", fetch = FetchType.LAZY)
+    @OneToMany(cascade=ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    //@JoinColumn(name="better")
     public Set<Bet> getBets() {
         return bets;
     }

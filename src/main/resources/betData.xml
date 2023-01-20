@@ -3,7 +3,7 @@
     <property name="id" value="401"/>
     <property name="amount" value="100"/>
     <property name="match" ref="201"/>
-    <property name="person" ref="1"/>
+    <property name="person" ref="4"/>
   </bean>
   <bean id="402" class="pl.ug.edu.mwitt.jpa.domain.Bet">
     <property name="id" value="402"/>

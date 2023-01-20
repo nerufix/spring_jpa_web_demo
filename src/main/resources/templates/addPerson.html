@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Title</title>
+</head>
+<body>
+    <form method="POST" action="/addPerson" th:object="${person}">
+        <div th:if="${#fields.hasErrors()}">
+        <span class="validationError">
+            Form errors. Try again.
+        </span>
+        </div>
+        <input th:if="${person.id!=null}" type="hidden" th:value="${person.id}" name="id">
+        <label>name:</label>
+        <input type="text" th:field="*{name}"/>
+        <p th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}" />
+        <br>
+        <label>password:</label>
+        <input type="text" th:field="*{password}"/>
+        <p th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}" />
+        <br>
+        <label>Team:</label>
+        <select name="team">
+            <option disabled selected value>No team</option>
+            <option th:each="team : ${allTeams}"
+                    th:value="${team.id}"
+                    th:field="*{team}"
+                    th:text="${team.name}"
+                    name="${team}">
+            </option>
+        </select>
+        <br>
+        <select name="personType">
+            <option th:each="personType : ${T(pl.ug.edu.mwitt.jpa.domain.PersonType).values()}"
+                    th:value="${personType}"
+                    th:text="${personType.getTranslation()}"
+                    name="${personType}">
+            </option>
+        </select>
+        <br>
+        <input type="submit" value="Submit" />
+    </form>
+</body>
+</html>

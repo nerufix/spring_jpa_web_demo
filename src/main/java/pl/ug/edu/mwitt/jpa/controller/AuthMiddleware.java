@@ -21,12 +21,13 @@ public class AuthMiddleware extends OncePerRequestFilter {
     @Autowired
     PersonService persons;
 
-    List<String> passURIs = List.of("", "/", "/login", "/register", "/css/style.css");
+    List<String> guestPassURIs = List.of("", "/", "/login", "/register", "/css/style.css");
+    List<String> adminPassURIs = List.of("");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Cookie[] cookies = request.getCookies();
-        if (!passURIs.contains(request.getRequestURI())) {
+        if (!guestPassURIs.contains(request.getRequestURI())) {
             for (Cookie cookie : cookies) {
                 String name = cookie.getName();
                 String value = cookie.getValue();

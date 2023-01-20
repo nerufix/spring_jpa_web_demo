@@ -20,7 +20,7 @@ import org.springframework.util.StreamUtils;
 
 public class CSVConversion  {
 
-    static List<String> refNames = List.of("team", "winner", "person", "match");
+    static List<String> refNames = List.of("team", "winner", "person", "match", "bets");
 
     public static String prettyFormat(String input, int indent) {
         try {

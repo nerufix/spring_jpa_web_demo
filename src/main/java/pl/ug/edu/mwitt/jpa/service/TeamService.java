@@ -2,6 +2,7 @@ package pl.ug.edu.mwitt.jpa.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.ug.edu.mwitt.jpa.domain.Person;
 import pl.ug.edu.mwitt.jpa.domain.Team;
 import pl.ug.edu.mwitt.jpa.repository.PersonRepository;
@@ -22,6 +23,11 @@ public class TeamService {
 
     public TeamRepository getRepo() {
         return teamRepo;
+    }
+
+    @Transactional
+    public List<Team> findAll() {
+        return (List<Team>) teamRepo.findAll();
     }
 
     public void importMany(List<Team> teams) {

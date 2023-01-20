@@ -17,6 +17,7 @@ import pl.ug.edu.mwitt.jpa.service.MatchService;
 import pl.ug.edu.mwitt.jpa.service.PersonService;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -128,15 +129,42 @@ public class DashboardController {
     public String sendBetPost(@Valid Bet bet, Errors errors, Model model){
         System.out.println(errors.getAllErrors());
         if(!errors.hasErrors()){
-            bets.getRepo().save(bet);
+            Person user = (Person) model.getAttribute("user");
+            assert user != null;
+            user.getBets().add(bet);
+            persons.getRepo().save(user);
         }
         return "redirect:/dashboard";
     }
 
     @PostMapping("/dashboard/bet/delete")
     public String sendBetDelete(@RequestParam Long id, Model model){
-        bets.getRepo().deleteById(id);
+        Person user = (Person) model.getAttribute("user");
+        assert user != null;
+        user.getBets().remove(user.getBets().stream().filter(b -> Objects.equals(b.getId(), id)).toList().get(0));
+        persons.getRepo().save(user);
         return "redirect:/dashboard";
+    }
+
+    @PostMapping("/search/bet")
+    public String sendBetPostSearch(@Valid Bet bet, Errors errors, Model model){
+        System.out.println(errors.getAllErrors());
+        if(!errors.hasErrors()){
+            Person user = (Person) model.getAttribute("user");
+            assert user != null;
+            user.getBets().add(bet);
+            persons.getRepo().save(user);
+        }
+        return "redirect:/search";
+    }
+
+    @PostMapping("/search/bet/delete")
+    public String sendBetDeleteSearch(@RequestParam Long id, Model model){
+        Person user = (Person) model.getAttribute("user");
+        assert user != null;
+        user.getBets().remove(user.getBets().stream().filter(b -> Objects.equals(b.getId(), id)).toList().get(0));
+        persons.getRepo().save(user);
+        return "redirect:/search";
     }
 
 }

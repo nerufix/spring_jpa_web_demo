@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Set;
 
+import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 
 @Entity
@@ -12,7 +13,7 @@ public class Team {
     private Long id;
     private String name;
     private Set<Person> people;
-    @OneToMany(cascade=PERSIST, fetch = FetchType.LAZY, mappedBy = "team")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "team")
     public Set<Person> getPersons() {
         return people;
     }

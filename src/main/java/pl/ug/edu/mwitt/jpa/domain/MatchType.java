@@ -27,8 +27,8 @@ public enum MatchType {
         this.translation = translation;
     }
 
-    @Override
-    public String toString() {
-        return translation;
-    }
+//    @Override
+//    public String toString() {
+//        return translation;
+//    }
 }

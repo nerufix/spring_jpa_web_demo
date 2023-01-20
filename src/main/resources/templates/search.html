@@ -24,8 +24,8 @@
     <select name="matchType">
       <option disabled selected value>Select type...</option>
       <option th:each="state : ${T(pl.ug.edu.mwitt.jpa.domain.MatchType).values()}"
-              th:value="${state}"
-              th:text="${state}"
+              th:value="${state.getTranslation()}"
+              th:text="${state.getTranslation()}"
               name="${state}">
       </option>
     </select>
@@ -51,9 +51,10 @@
       <td>Contestants</td>
       <td>Winner</td>
       <td>Your bet</td>
+      <td th:if="${user.personType==T(pl.ug.edu.mwitt.jpa.domain.PersonType).Admin}">Options</td>
     </tr>
     <tr th:each="match, iter : ${foundMatches}">
-      <td th:text="${match.matchType}"/>
+      <td th:text="${match.matchType.getTranslation()}"/>
       <td th:text="${match.beginTime}"/>
       <td>
         <span th:each="person, iterStat : ${match.persons}"
@@ -64,7 +65,7 @@
       <td th:unless="${match.winner!=null}">N/A</td>
       <td>
         <form th:if="${match.winner==null && !foundMatchesUserBets.get(iter.index).isPresent()}"
-              method="POST" th:action="@{/dashboard/bet}" th:object="${bet}">
+              method="POST" th:action="@{/search/bet}" th:object="${bet}">
           <label>amount:</label>
           <input type="number" min="0.01" step="0.01" th:field="*{amount}">
           <input type="hidden" th:value="${match.id}" name="match">
@@ -84,11 +85,22 @@
           Betted: <span th:text="${foundMatchesUserBets.get(iter.index).get().amount}"/>
           on <span th:text="${foundMatchesUserBets.get(iter.index).get().person.name}"/>
           <br>
-          <form th:if="${match.winner!=null}" method="POST" action="/dashboard/bet/delete">
+          <form th:if="${match.winner==null}" method="POST" action="/search/bet/delete">
             <input type="hidden" th:value="${foundMatchesUserBets.get(iter.index).get().id}" name="id">
             <input class="red" type="submit" value="Remove bet" />
           </form>
         </div>
+      </td>
+      <td th:if="${user.personType==T(pl.ug.edu.mwitt.jpa.domain.PersonType).Admin}">
+        <form method="GET" action="/addPerson">
+          <input type="submit" value="Add user" />
+        </form>
+        <form method="GET" action="/addMatch">
+          <input type="submit" value="Add match" />
+        </form>
+        <form method="GET" action="/addTeam">
+          <input type="submit" value="Add team" />
+        </form>
       </td>
     </tr>
   </table>
@@ -98,12 +110,19 @@
       <td>Name</td>
       <td>Team</td>
       <td>Type</td>
+      <td th:if="${user.personType==T(pl.ug.edu.mwitt.jpa.domain.PersonType).Admin}">Options</td>
     </tr>
     <tr th:each="person : ${foundPeople}">
       <td th:text="${person.name}"/>
       <td th:if="${person.team!=null}" th:text="${person.team.name}"/>
       <td th:unless="${person.team!=null}">No team</td>
-      <td th:text="${person.personType}"/>
+      <td th:text="${person.personType.getTranslation()}"/>
+      <td th:if="${user.personType==T(pl.ug.edu.mwitt.jpa.domain.PersonType).Admin}">
+        <form method="GET" action="/addPerson">
+          <input type="hidden" th:value="${person.id}" name="id">
+          <input type="submit" value="Edit" />
+        </form>
+      </td>
     </tr>
   </table>
 </body>

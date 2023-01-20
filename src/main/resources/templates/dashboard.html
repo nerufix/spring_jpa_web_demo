@@ -11,6 +11,18 @@
   <form method="GET" action="/search">
       <input type="submit" value="Search" />
   </form>
+  <div th:if="${user.personType==T(pl.ug.edu.mwitt.jpa.domain.PersonType).Admin}">
+      <h5>Admin Panel</h5>
+      <form method="GET" action="/addPerson">
+          <input type="submit" value="Add user" />
+      </form>
+      <form method="GET" action="/addMatch">
+          <input type="submit" value="Add match" />
+      </form>
+      <form method="GET" action="/addTeam">
+          <input type="submit" value="Add team" />
+      </form>
+  </div>
   <h3>Upcoming matches: </h3>
   <table>
       <tr>
