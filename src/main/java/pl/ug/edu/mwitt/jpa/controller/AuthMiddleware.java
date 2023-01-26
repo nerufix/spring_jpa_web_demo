@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pl.ug.edu.mwitt.jpa.domain.Person;
+import pl.ug.edu.mwitt.jpa.domain.PersonType;
 import pl.ug.edu.mwitt.jpa.service.PersonService;
 
 import java.io.IOException;
@@ -22,7 +23,9 @@ public class AuthMiddleware extends OncePerRequestFilter {
     PersonService persons;
 
     List<String> guestPassURIs = List.of("", "/", "/login", "/register", "/css/style.css");
-    List<String> adminPassURIs = List.of("");
+    List<String> adminPassURIs = List.of("/addPerson", "/deletePerson",
+                                         "/addMatch", "/deleteMatch",
+                                         "/addTeam", "/deleteTeam");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -33,7 +36,16 @@ public class AuthMiddleware extends OncePerRequestFilter {
                 String value = cookie.getValue();
                 if (name.equals("session") && !value.equals("")) {
                     Optional<Person> user = persons.findByIdTransactional(value);
-                    user.ifPresent(person -> request.setAttribute("user", person));
+                    //user.ifPresent(person -> request.setAttribute("user", person));
+                    if (user.isPresent()) {
+                        request.setAttribute("user", user.get());
+                        if (adminPassURIs.contains(request.getRequestURI())
+                        && !user.get().getPersonType().equals(PersonType.Admin)) {
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
                     filterChain.doFilter(request, response);
                     return;
                 }

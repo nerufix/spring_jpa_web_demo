@@ -21,7 +21,7 @@ public class Bet {
     //@NotNull
 //    private Person better;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY) //, cascade = CascadeType.MERGE
     @JoinColumn(name="person")
     public Person getPerson() {
         return person;

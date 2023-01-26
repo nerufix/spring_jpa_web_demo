@@ -9,18 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
-import pl.ug.edu.mwitt.jpa.domain.Match;
-import pl.ug.edu.mwitt.jpa.domain.MatchType;
-import pl.ug.edu.mwitt.jpa.domain.MatchValueDTO;
-import pl.ug.edu.mwitt.jpa.domain.Team;
+import pl.ug.edu.mwitt.jpa.domain.*;
 import pl.ug.edu.mwitt.jpa.repository.MatchRepository;
 import pl.ug.edu.mwitt.jpa.repository.TeamRepository;
 
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MatchService {
@@ -60,6 +56,16 @@ public class MatchService {
         return mostBettedMatches.subList(0, Integer.min(mostBettedMatches.size(), 3));
     }
 
+    @Transactional
+    public List<Match> findByPersons_Id(String id) {
+        List<Match> matches = matchRepo.findByPersons_Id(Long.valueOf(id));
+        for (Match m : matches) {
+            Hibernate.initialize(m.getPersons());
+            Hibernate.initialize(m.getWinner());
+        }
+        return matches;
+    }
+
     @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
     public List<Match> findBySearch(String contestant,
                                     String beginDate,
@@ -90,5 +96,33 @@ public class MatchService {
         }
 
         return query;
+    }
+
+    @Transactional
+    public Optional<Match> findByIdTransactional(String id) {
+        Optional<Match> match = matchRepo.findById(Long.parseLong(id));
+        if (match.isPresent()) {
+            Hibernate.initialize(match.get().getWinner());
+            Hibernate.initialize(match.get().getPersons());
+        }
+        return match;
+    }
+
+    @Transactional
+    public MatchFormDTO convertMatchToFormDTO(String id) {
+        MatchFormDTO dto = new MatchFormDTO();
+        Match match = findByIdTransactional(id).get();
+        dto.setId(match.getId().toString());
+        dto.setMatchType(match.getMatchType());
+        Iterator<Person> persons = match.getPersons().stream().iterator();
+        dto.setPerson1(persons.next().getId().toString());
+        dto.setPerson2(persons.next().getId().toString());
+        dto.setBeginTime(match.getBeginTime().toString()
+                .replace(" ", "T")
+                .substring(0, match.getBeginTime().toString().length()-5));
+        if (match.getWinner()!=null) {
+            dto.setWinner(match.getWinner().getId().toString());
+        }
+        return dto;
     }
 }

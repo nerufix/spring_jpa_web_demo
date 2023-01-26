@@ -15,6 +15,7 @@ import pl.ug.edu.mwitt.jpa.domain.*;
 import pl.ug.edu.mwitt.jpa.service.BetService;
 import pl.ug.edu.mwitt.jpa.service.MatchService;
 import pl.ug.edu.mwitt.jpa.service.PersonService;
+import pl.ug.edu.mwitt.jpa.service.TeamService;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -33,6 +34,9 @@ public class DashboardController {
 
     @Autowired
     BetService bets;
+
+    @Autowired
+    TeamService teams;
 
     @ModelAttribute("user")
     public Person user(HttpServletRequest request) {
@@ -79,10 +83,13 @@ public class DashboardController {
                 .stream()
                 .map(id -> bets.findByIdTransactional(id))
                 .toList();
+        Person user = (Person) model.getAttribute("user");
+
         model.addAttribute("upcomingMatchesUserBets", upcomingMatchesUserBets);
         model.addAttribute("mostBettedMatchesUserBets", mostBettedMatchesUserBets);
         model.addAttribute("upcomingMatches", upcomingMatches);
         model.addAttribute("mostBettedMatches", mostBettedMatches);
+        model.addAttribute("balance", persons.getBalance(user.getId()));
         return "dashboard";
     }
 
@@ -122,6 +129,14 @@ public class DashboardController {
                              @RequestParam String team,
                              Model model){
         model.addAttribute("foundPeople", persons.findBySearch(name, team));
+        return "search";
+    }
+
+    @PostMapping("/searchTeam")
+    public String sendSearchTeam(HttpServletRequest request,
+                                   @RequestParam String name,
+                                   Model model){
+        model.addAttribute("foundTeams", teams.findBySearch(name));
         return "search";
     }
 

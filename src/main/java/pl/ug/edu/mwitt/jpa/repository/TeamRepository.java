@@ -12,4 +12,8 @@ import java.util.Optional;
 public interface TeamRepository extends CrudRepository<Team, Long> {
     Optional<Team> findById(Long id);
 
+    List<Team> findAll();
+
+    List<Team> findByNameContaining(String name);
+
 }

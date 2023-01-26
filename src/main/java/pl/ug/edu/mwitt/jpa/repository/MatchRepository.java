@@ -20,13 +20,6 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
 
     List<Match> findFirst3ByBeginTimeGreaterThanOrderByBeginTimeAsc(Timestamp timestamp);
 
-//    @Query(value = """
-//            select new pl.ug.edu.mwitt.jpa.domain.MatchValueDTO(
-//            m,
-//            (select sum(b.amount) from Bet b where b.match.id = m.id) as total
-//            ) from Match m order by total desc
-//            """)
-
     @Query(value = """
             select new pl.ug.edu.mwitt.jpa.domain.MatchValueDTO(
             m,
@@ -34,6 +27,8 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
             ) from Match m right join Bet b on b.match=m.id group by m order by amount desc
             """)
     List<MatchValueDTO> findMostBettedMatches();
+
+    List<Match> findByPersons_Id(Long id);
 
     List<Match> findAll();
 

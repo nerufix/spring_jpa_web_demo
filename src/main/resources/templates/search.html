@@ -43,6 +43,17 @@
     <br>
     <input type="submit" value="Submit"/>
   </form>
+  <br>
+  <h5>Find teams</h5>
+  <form method="POST" th:action="@{/searchTeam}" >
+    <label>Name</label>
+    <input type="text" th:value="${name}" name="name"/>
+    <br>
+    <input type="submit" value="Submit"/>
+  </form>
+
+  <h4 th:if="${cannotDeletePerson}">Cannot delete, because that person is still referenced by these matches:</h4>
+  <h4 th:if="${cannotDeleteTeam}">Cannot delete, because that team is still referenced by these people:</h4>
 
   <table th:if="${foundMatches}">
     <tr>
@@ -92,14 +103,13 @@
         </div>
       </td>
       <td th:if="${user.personType==T(pl.ug.edu.mwitt.jpa.domain.PersonType).Admin}">
-        <form method="GET" action="/addPerson">
-          <input type="submit" value="Add user" />
-        </form>
         <form method="GET" action="/addMatch">
-          <input type="submit" value="Add match" />
+          <input type="hidden" th:value="${match.id}" name="id">
+          <input type="submit" value="Edit" />
         </form>
-        <form method="GET" action="/addTeam">
-          <input type="submit" value="Add team" />
+        <form method="POST" action="/deleteMatch">
+          <input type="hidden" th:value="${match.id}" name="id">
+          <input type="submit" class="red" value="Delete" />
         </form>
       </td>
     </tr>
@@ -121,6 +131,29 @@
         <form method="GET" action="/addPerson">
           <input type="hidden" th:value="${person.id}" name="id">
           <input type="submit" value="Edit" />
+        </form>
+        <form method="POST" action="/deletePerson">
+          <input type="hidden" th:value="${person.id}" name="id">
+          <input type="submit" class="red" value="Delete" />
+        </form>
+      </td>
+    </tr>
+  </table>
+  <table th:if="${foundTeams}">
+    <tr>
+      <td>Name</td>
+      <td th:if="${user.personType==T(pl.ug.edu.mwitt.jpa.domain.PersonType).Admin}">Options</td>
+    </tr>
+    <tr th:each="team : ${foundTeams}">
+      <td th:text="${team.name}"/>
+      <td th:if="${user.personType==T(pl.ug.edu.mwitt.jpa.domain.PersonType).Admin}">
+        <form method="GET" action="/addTeam">
+          <input type="hidden" th:value="${team.id}" name="id">
+          <input type="submit" value="Edit" />
+        </form>
+        <form method="POST" action="/deleteTeam">
+          <input type="hidden" th:value="${team.id}" name="id">
+          <input type="submit" class="red" value="Delete" />
         </form>
       </td>
     </tr>

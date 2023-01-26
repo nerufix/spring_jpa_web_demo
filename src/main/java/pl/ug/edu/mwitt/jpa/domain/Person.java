@@ -24,23 +24,24 @@ public class Person {
     @Size(min = 5, message = "Password must contain at least 5 characters.")
     @Pattern(regexp = ".*\\d.*", message = "Password must contain at least one digit.")
     private String password;
-    private Set<Match> matches;
+    //private Set<Match> matches;
     private Set<Bet> bets;
     private PersonType personType;
     private Team team;
 
     @PrePersist
-    @PreUpdate
     public void prePersist() {
-        this.password = Hashing.sha256()
-                .hashString(password, StandardCharsets.UTF_8)
-                .toString();
+        if (password.length()!=64) {
+            this.password = Hashing.sha256()
+                    .hashString(password, StandardCharsets.UTF_8)
+                    .toString();
+        }
     }
 
-    @ManyToMany(mappedBy="persons", fetch = FetchType.LAZY)
-    public Set<Match> getMatches() {
-        return matches;
-    }
+//    @ManyToMany(mappedBy="persons", fetch = FetchType.LAZY)
+//    public Set<Match> getMatches() {
+//        return matches;
+//    }
 
 
 
@@ -85,9 +86,9 @@ public class Person {
         this.password = password;
     }
 
-    public void setMatches(Set<Match> matches) {
-        this.matches = matches;
-    }
+//    public void setMatches(Set<Match> matches) {
+//        this.matches = matches;
+//    }
 
     public void setBets(Set<Bet> bets) {
         this.bets = bets;

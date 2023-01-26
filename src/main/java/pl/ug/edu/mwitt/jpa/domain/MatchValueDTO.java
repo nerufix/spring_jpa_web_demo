@@ -1,5 +1,6 @@
 package pl.ug.edu.mwitt.jpa.domain;
 
+import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.sql.Timestamp;

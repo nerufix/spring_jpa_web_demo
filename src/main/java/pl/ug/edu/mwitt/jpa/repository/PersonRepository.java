@@ -38,4 +38,19 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     List<Long> findBets_IdByIdAndBets_Match_Id(Long personId, Long matchId);
 
 
+    List<Person> findByPersonType(PersonType type);
+
+
+    @Modifying
+    @Query(value = "delete from person_bets where bets_id=?1", nativeQuery = true)
+    void deleteBetAssociation(Long betId);
+
+    @Query(value = """
+            select new pl.ug.edu.mwitt.jpa.domain.BetSumOnPersonDTO(
+            p.id,
+            sum(b.amount) as amount
+            ) from Bet b left join b.match.persons p where b.match.id=?1 and p.id=b.person group by p.id
+            """)
+    List<BetSumOnPersonDTO> findSumOnPersonByMatchId(Long id);
+
 }

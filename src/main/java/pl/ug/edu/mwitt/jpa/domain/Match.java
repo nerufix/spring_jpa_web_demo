@@ -1,6 +1,7 @@
 package pl.ug.edu.mwitt.jpa.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -10,8 +11,10 @@ public class Match {
 
     private Long id;
     private Set<Person> persons;
+    @NotNull
     private MatchType matchType;
     private Person winner;
+    @NotNull
     private Timestamp beginTime;
 
     @ManyToMany(fetch = FetchType.LAZY)

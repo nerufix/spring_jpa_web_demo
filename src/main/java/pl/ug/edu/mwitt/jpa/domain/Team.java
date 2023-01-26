@@ -1,6 +1,7 @@
 package pl.ug.edu.mwitt.jpa.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 
@@ -11,6 +12,7 @@ import static jakarta.persistence.CascadeType.PERSIST;
 public class Team {
 
     private Long id;
+    @NotNull(message = "Name cannot be empty")
     private String name;
     private Set<Person> people;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "team")

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <title>Title</title>
+</head>
+<body>
+<form method="POST" action="/addTeam" th:object="${team}">
+  <div th:if="${#fields.hasErrors()}">
+        <span class="validationError">
+            Form errors. Try again.
+        </span>
+  </div>
+  <input th:if="${team.id!=null}" type="hidden" th:value="${team.id}" name="id">
+  <label>name:</label>
+  <input type="text" th:field="*{name}"/>
+  <p th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}" />
+  <br>
+  <input type="submit" value="Submit" />
+</form>
+</body>
+</html>

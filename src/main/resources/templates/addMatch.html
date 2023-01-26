@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Title</title>
+</head>
+<body>
+    <form method="POST" action="/addMatch" th:object="${match}">
+        <div th:if="${fields!=null && fields.hasErrors()}">
+        <span class="validationError">
+            Form errors. Try again.
+        </span>
+        </div>
+        <input th:if="${match.id!=null}" type="hidden" th:value="${match.id}" name="id">
+        <label>Begin date:</label>
+        <input type="datetime-local" th:value="*{beginTime}" name="beginTime"/>
+        <p th:if="${fields!=null && fields.hasFieldErrors('beginTime')}"
+           th:text="${fields.getFieldError('beginTime').getDefaultMessage()}" />
+        <br>
+        <label>Contestant 1:</label>
+        <select name="person1">
+            <option th:each="person : ${allPlayers}"
+                    th:value="${person.id}"
+                    th:field="*{person1}"
+                    th:text="${person.name}"
+                    name="person2">
+            </option>
+        </select>
+        <br>
+        <label>Contestant 2:</label>
+        <select name="person2">
+            <option th:each="person : ${allPlayers}"
+                    th:value="${person.id}"
+                    th:field="*{person2}"
+                    th:text="${person.name}"
+                    name="person2">
+            </option>
+        </select>
+        <p th:if="${fields!=null && fields.hasFieldErrors('notSamePerson')}"
+           th:text="${fields.getFieldError('notSamePerson').getDefaultMessage()}" />
+        <br>
+        <div th:if=${match.id!=null}>
+            <label>Winner:</label>
+            <select name="winner">
+                <option disabled selected th:value="${null}" name="winner">Select winner...</option>
+                <option th:each="person : ${matchPersons}"
+                        th:value="${person.id}"
+                        th:field="*{winner}"
+                        th:text="${person.name}"
+                        name="winner">
+                </option>
+            </select>
+            <br>
+        </div>
+        <label>Type:</label>
+        <select name="matchType">
+            <option th:each="matchType : ${T(pl.ug.edu.mwitt.jpa.domain.MatchType).values()}"
+                    th:value="${matchType}"
+                    th:field="*{matchType}"
+                    th:text="${matchType.getTranslation()}"
+                    name="${matchType}">
+            </option>
+        </select>
+        <br>
+        <input type="submit" value="Submit" />
+    </form>
+</body>
+</html>
